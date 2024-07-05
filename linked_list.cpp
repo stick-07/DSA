@@ -9,37 +9,58 @@ struct Node {
    Node* next;
 };
 
-void showList(Node* start) {
-   printf("Data: %d\nNext Address: %d\n", (*start).data, (*start).next);
-   while((*start).next != NULL) {
-      start = (*start).next;
-      printf("Data: %d\nNext Address: %d\n", (*start).data, (*start).next);
+struct Node* head = NULL;
+
+void printList() {
+   if(head != NULL) {
+      Node* temp = head;
+      printf("Linked List: ");
+      while(temp != NULL) {
+         printf("%d ", temp->data, temp->next);
+         temp = temp->next;
+      }
+   }
+   printf("\n");
+};
+
+void insertEnd(int data) {
+   if(head == NULL) {
+      head = new Node;
+      head->data = data;
+      head->next = NULL;
+   } else {
+      Node* temp = head;
+      while(temp->next != NULL) {
+         temp = temp->next;
+      }
+      Node* newNode = new Node;
+      temp->next = newNode;
+      newNode->data = data;
+      newNode->next = NULL;
    }
 };
 
-void insert(Node* start, int data) {
-   while((*start).next != NULL) {
-      start = (*start).next;
+void insertStart(int data) {
+   Node* newNode = new Node;
+   newNode->data = data;
+   if(head != NULL) {
+      newNode->next = head;
+   } else {
+      newNode->next = NULL;
    }
-   Node* temp1 = new Node;
-   (*start).next = temp1;
-   (*temp1).data = data;
-   (*temp1).next = NULL;
-};
+   head = newNode;
+}
 
 int main() {
-   Node* A = new Node;
-   (*A).data = 2;
-   (*A).next = NULL;
+   printList();
+   insertEnd(7);
+   insertStart(4);
 
-   insert(A, 4);
-   insert(A, 7);
-
-   showList(A);
-
-   insert(A, 10);
-   insert(A, 13);
+   printList();
+   insertStart(2);
+   insertEnd(10);
+   insertEnd(13);
    
-   showList(A);
+   printList();
    return 0;
 };
