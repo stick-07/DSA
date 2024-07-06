@@ -7,46 +7,50 @@ struct Node {
    Node* next;
 };
 
-void printForward(Node* head) {
-   printf("Doubly Linked List: ");
-   while(head != NULL) {
-      printf("%d ", head->data);
-      head = head->next;
-   }
-   printf("\n");
-}
+struct DoublyLinkedList {
+   Node* head = NULL;
 
-void printReverse(Node* head) {
-   printf("Doubly Linked List: ");
-   while(head->next != NULL) {
-      head = head->next;
+   void printForward() {
+      Node* temp = head;
+      printf("Doubly Linked List: ");
+      while(temp != NULL) {
+         printf("%d ", temp->data);
+         temp = temp->next;
+      }
+      printf("\n");
    }
-   while(head != NULL) {
-      printf("%d ", head->data);
-      head = head->prev;
-   }
-   printf("\n");
-}
 
-Node* insertStart(Node* head, int data) {
-   Node* newNode = new Node;
-   newNode->data = data;
-   newNode->prev = NULL;
-   newNode->next = head;
-   if(head != NULL) {
-      head->prev = newNode;
+   void printReverse() {
+      Node* temp = head;
+      printf("Doubly Linked List: ");
+      while(temp->next != NULL) {
+         temp = temp->next;
+      }
+      while(temp != NULL) {
+         printf("%d ", temp->data);
+         temp = temp->prev;
+      }
+      printf("\n");
    }
-   head = newNode;
-   return head;
-}
 
-Node* insertEnd(Node* head, int data) {
-   if(head == NULL) {
-      head = new Node;
-      head->data = data;
-      head->prev = NULL;
-      head->next = NULL;
-   } else {
+   void insertStart(int data) {
+      Node* newNode = new Node;
+      newNode->data = data;
+      newNode->prev = NULL;
+      newNode->next = head;
+      if(head != NULL) {
+         head->prev = newNode;
+      }
+      head = newNode;
+   }
+
+   void insertEnd(int data) {
+      if(head == NULL) {
+         head = new Node;
+         head->data = data;
+         head->prev = NULL;
+         head->next = NULL;
+      }
       Node* temp = head;
       while(temp->next != NULL) {
          temp = temp->next;
@@ -57,24 +61,25 @@ Node* insertEnd(Node* head, int data) {
       newNode->next = NULL;
       temp->next = newNode;
    }
-   return head;
-}
+};
+typedef DoublyLinkedList DLL;
 
 int main() {
-   Node* A = NULL;
-   A = insertEnd(A, 2);
-   A = insertEnd(A, 7);
-   printForward(A);
-   printReverse(A);
+   DLL A;
 
-   A = insertEnd(A, 8);
-   A = insertEnd(A, 9);
-   printForward(A);
-   printReverse(A);
+   A.insertEnd(2);
+   A.insertEnd(7);
+   A.printForward();
+   A.printReverse();
 
-   A = insertStart(A, 0);
-   A = insertStart(A, -7);
-   printForward(A);
-   printReverse(A);
+   A.insertEnd(8);
+   A.insertEnd(9);
+   A.printForward();
+   A.printReverse();
+
+   A.insertStart(0);
+   A.insertStart(-7);
+   A.printForward();
+   A.printReverse();
    return 0;
 }

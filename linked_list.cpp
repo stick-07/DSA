@@ -6,21 +6,26 @@ struct Node {
    Node* next;
 };
 
-void printForward(Node* head) {
-   printf("Linked List: ");
-   while(head != NULL) {
-      printf("%d ", head->data, head->next);
-      head = head->next;
-   }
-   printf("\n");
-}
+struct LinkedList {
+   Node* head = NULL;
 
-Node* insertEnd(Node* head, int data) {
-   if(head == NULL) {
-      head = new Node;
-      head->data = data;
-      head->next = NULL;
-   } else {
+   void printForward() {
+      Node* temp = head;
+      printf("Linked List: ");
+      while(temp != NULL) {
+         printf("%d ", temp->data, temp->next);
+         temp = temp->next;
+      }
+      printf("\n");
+   }
+
+   void insertEnd(int data) {
+      if(head == NULL) {
+         head = new Node;
+         head->data = data;
+         head->next = NULL;
+         return;
+      }
       Node* temp = head;
       while(temp->next != NULL) {
          temp = temp->next;
@@ -30,27 +35,24 @@ Node* insertEnd(Node* head, int data) {
       newNode->data = data;
       newNode->next = NULL;
    }
-   return head;
-}
 
-Node* insertStart(Node* head, int data) {
-   Node* newNode = new Node;
-   newNode->data = data;
-   newNode->next = head;
-   head = newNode;
-   return head;
-}
+   void insertStart(int data) {
+      Node* newNode = new Node;
+      newNode->data = data;
+      newNode->next = head;
+      head = newNode;
+   }
 
-Node* Insert(Node* head, int data, int n) {
-   if(n == 0) {
-      head = insertStart(head, data);
-   } else {
+   void Insert(int data, int n) {
+      if(n == 0) {
+         insertStart(data);
+         return;
+      }
       Node* temp = head;
       for(int i = 0; i < n-1; i++) {
          temp = temp->next;
          if(temp == NULL) {
             printf("Index Out Of Bound\n");
-            return head;
          }
       }
       Node* newNode = new Node;
@@ -58,88 +60,84 @@ Node* Insert(Node* head, int data, int n) {
       newNode->data = data;
       temp->next = newNode;
    }
-   return head;
-}
 
-Node* Delete(Node* head, int n) {
-   Node* temp = head;
-   if(n == 0) {
-      head = temp->next;
-      delete temp;
-   } else {
+   void Delete(int n) {
+      Node* temp = head;
+      if(n == 0) {
+         head = temp->next;
+         delete temp;
+         return;
+      }
       for(int i = 0; i < n-1; i++) {
          temp = temp->next;
          if(temp->next == NULL) {
             printf("Index Out Of Bound\n");
-            return head;
+            return;
          }
       }
       Node* del = temp->next;
       temp->next = del->next;
       delete del;
    }
-   return head;
-}
-
-Node* Reverse(Node* head) {
-   Node* curr = head;
-   Node* next;
-   Node* prev = NULL;
-   while(curr != NULL) {
-      next = curr->next;
-      curr->next = prev;
-      prev = curr;
-      curr = next;
+   
+   void Reverse() {
+      Node* curr = head;
+      Node* next;
+      Node* prev = NULL;
+      while(curr != NULL) {
+         next = curr->next;
+         curr->next = prev;
+         prev = curr;
+         curr = next;
+      }
+      head = prev;
    }
-   head = prev;
-   return head;
-}
 
-Node* R(Node* head) {
-   Node* a = head;
-   if(a->next == NULL) {
-      head = a;
-      return head;
+   void R(Node* a) {
+      if(a->next == NULL) {
+         head = a;
+         return;
+      }
+      R(a->next);
+      Node* b = a->next;
+      b->next = a;
+      a->next = NULL;
    }
-   R(a->next);
-   Node* b = a->next;
-   b->next = a;
-   a->next = NULL;
-   return head;
-}
+};
+typedef struct LinkedList LL;
 
 int main() {
-   Node* head = NULL;
+   LL head;
 
-   printForward(head);
-   head = insertEnd(head, 7);
-   head = insertStart(head, 4);
+   head.printForward();
+   head.insertEnd(7);
+   head.insertStart(4);
 
-   printForward(head);
-   head = insertStart(head, 2);
-   head = insertEnd(head, 10);
-   head = insertEnd(head, 13);
+   head.printForward();
+   head.insertStart(2);
+   head.insertEnd(10);
+   head.insertEnd(13);
 
-   printForward(head);
-   head = Insert(head, 6, 2);
-   head = Insert(head, 100, 6);
-   head = Insert(head, 1, 0);
+   head.printForward();
+   head.Insert(6, 2);
+   head.Insert(100, 6);
+   head.Insert(1, 0);
 
-   printForward(head);
-   head = Delete(head, 2);
-   head = Delete(head, 0);
+   head.printForward();
+   head.Delete(2);
+   head.Delete(0);
 
-   printForward(head);
-   head = Insert(head, 9, 3);
-   printForward(head);
+   head.printForward();
+   head.Insert(9, 3);
+   head.printForward();
 
-   head = Delete(head, 6);
-   printForward(head);
+   head.Delete(6);
+   head.printForward();
 
-   head = Delete(head, 6);
-   head = Reverse(head);
-   printForward(head);
-   head = R(head);
-   printForward(head);
+   head.Delete(6);
+   head.Reverse();
+   head.printForward();
+   head.R(head.head);
+   head.printForward();
    return 0;
 }
