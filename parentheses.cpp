@@ -2,18 +2,17 @@
 #include <stdlib.h>
 #include <stack>
 #include <unordered_map>
+#include <string>
+#include <iostream>
 
 using namespace std;
 
-void parentheses_check(char string[]) {
+void parentheses_check(string expression) {
    unordered_map<char, char> pmap = {{'(', ')'}, {'[', ']'}, {'{', '}'}};
    stack<char> s;
-   int len = 0;
-   while(string[len] != '\0') {
-      len++;
-   }
+   int len = expression.length();
    for(int i = 0; i < len; i++) {
-      char c = string[i];
+      char c = expression[i];
       if(c == '(' || c == '[' || c == '{') {
          s.push(c);
       } else if(c == ')' || c == ']' || c == '}') {
@@ -32,9 +31,9 @@ void parentheses_check(char string[]) {
 }
 
 int main() {
-   char string[50];
-   printf("String: ");
-   scanf("%s", &string);
-   parentheses_check(string);
+   string expression;
+   cout << "Expression: ";
+   cin >> expression;
+   parentheses_check(expression);
    return 0;
 }
