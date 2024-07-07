@@ -3,5 +3,8 @@
 #include <math.h>
 
 int main() {
-   printf("%d", int(pow(10, 0)));
+   int* a = new int;
+   printf("%d", a);
+   delete a;
+   printf("%d", a);
 }
